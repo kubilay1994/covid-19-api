@@ -1,0 +1,32 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    background-color: rebeccapurple;
+    padding: 0.5rem;
+    /* height: 4rem; */
+    z-index: 1;
+}
+
+.link {
+    text-decoration: none;
+    color: whitesmoke;
+    cursor: pointer;
+}
+
+ul {
+    display: flex;
+    align-items: center;
+
+    justify-content: space-around;
+    list-style: none;
+    width: 100%;
+}
+
+
+.active {
+    color: yellow;
+}

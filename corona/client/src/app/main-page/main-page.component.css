@@ -1,0 +1,44 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    margin: 1rem;
+}
+
+.map {
+    height: 35rem;
+    padding: 0.5rem;
+    box-shadow: 1px 1px 2px 3px grey;
+}
+
+.mapContainer {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.mapHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.mapHeader h3 {
+    margin: 0;
+}
+
+.coronaInfo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    box-shadow: 0px 0px 7px 3px #cebae2;
+}
+
+.coronaInfo > div {
+    flex: 1;
+    text-align: center;
+    border-right: 1px solid #cebae2;
+    padding: 1rem;
+    /* flex-basis: 25%; */
+}

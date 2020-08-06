@@ -1,0 +1,175 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+
+    <!-- Set this to true if you enable server-side prerendering -->
+    <BuildServerSideRenderer>false</BuildServerSideRenderer>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.6" />
+    <PackageReference Include="MongoDB.Driver" Version="2.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\**" />
+    <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\**" />
+    <EmbeddedResource Remove="ClientApp\**" />
+    <None Remove="$(SpaRoot)**" />
+    <None Remove="ClientApp\**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\.editorconfig" />
+    <None Remove="ClientApp\.gitignore" />
+    <None Remove="ClientApp\angular.json" />
+    <None Remove="ClientApp\browserslist" />
+    <None Remove="ClientApp\e2e\protractor.conf.js" />
+    <None Remove="ClientApp\e2e\src\app.e2e-spec.ts" />
+    <None Remove="ClientApp\e2e\src\app.po.ts" />
+    <None Remove="ClientApp\e2e\tsconfig.e2e.json" />
+    <None Remove="ClientApp\package-lock.json" />
+    <None Remove="ClientApp\package.json" />
+    <None Remove="ClientApp\README.md" />
+    <None Remove="ClientApp\src\app\app.component.html" />
+    <None Remove="ClientApp\src\app\app.component.ts" />
+    <None Remove="ClientApp\src\app\app.module.ts" />
+    <None Remove="ClientApp\src\app\app.server.module.ts" />
+    <None Remove="ClientApp\src\app\counter\counter.component.html" />
+    <None Remove="ClientApp\src\app\counter\counter.component.spec.ts" />
+    <None Remove="ClientApp\src\app\counter\counter.component.ts" />
+    <None Remove="ClientApp\src\app\fetch-data\fetch-data.component.html" />
+    <None Remove="ClientApp\src\app\fetch-data\fetch-data.component.ts" />
+    <None Remove="ClientApp\src\app\home\home.component.html" />
+    <None Remove="ClientApp\src\app\home\home.component.ts" />
+    <None Remove="ClientApp\src\app\nav-menu\nav-menu.component.css" />
+    <None Remove="ClientApp\src\app\nav-menu\nav-menu.component.html" />
+    <None Remove="ClientApp\src\app\nav-menu\nav-menu.component.ts" />
+    <None Remove="ClientApp\src\assets\.gitkeep" />
+    <None Remove="ClientApp\src\environments\environment.prod.ts" />
+    <None Remove="ClientApp\src\environments\environment.ts" />
+    <None Remove="ClientApp\src\index.html" />
+    <None Remove="ClientApp\src\karma.conf.js" />
+    <None Remove="ClientApp\src\main.ts" />
+    <None Remove="ClientApp\src\polyfills.ts" />
+    <None Remove="ClientApp\src\styles.css" />
+    <None Remove="ClientApp\src\test.ts" />
+    <None Remove="ClientApp\src\tsconfig.app.json" />
+    <None Remove="ClientApp\src\tsconfig.server.json" />
+    <None Remove="ClientApp\src\tsconfig.spec.json" />
+    <None Remove="ClientApp\src\tslint.json" />
+    <None Remove="ClientApp\tsconfig.json" />
+    <None Remove="ClientApp\tslint.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="client\.vscode\settings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="client\.git\COMMIT_EDITMSG" />
+    <None Include="client\.git\config" />
+    <None Include="client\.git\description" />
+    <None Include="client\.git\FETCH_HEAD" />
+    <None Include="client\.git\HEAD" />
+    <None Include="client\.git\hooks\applypatch-msg.sample" />
+    <None Include="client\.git\hooks\commit-msg.sample" />
+    <None Include="client\.git\hooks\fsmonitor-watchman.sample" />
+    <None Include="client\.git\hooks\post-update.sample" />
+    <None Include="client\.git\hooks\pre-applypatch.sample" />
+    <None Include="client\.git\hooks\pre-commit.sample" />
+    <None Include="client\.git\hooks\pre-merge-commit.sample" />
+    <None Include="client\.git\hooks\pre-push.sample" />
+    <None Include="client\.git\hooks\pre-rebase.sample" />
+    <None Include="client\.git\hooks\pre-receive.sample" />
+    <None Include="client\.git\hooks\prepare-commit-msg.sample" />
+    <None Include="client\.git\hooks\update.sample" />
+    <None Include="client\.git\index" />
+    <None Include="client\.git\info\exclude" />
+    <None Include="client\.git\logs\HEAD" />
+    <None Include="client\.git\logs\refs\heads\master" />
+    <None Include="client\.git\objects\01\08ae013d57fc5ac5c4f38247fb786ec1753389" />
+    <None Include="client\.git\objects\03\711e5d92cb7d7cd21262d6cc863b41c05092e9" />
+    <None Include="client\.git\objects\0c\cadaf32fba577ea99a28a0b9e8193a1fe0dac9" />
+    <None Include="client\.git\objects\0e\87624678c5711a6a98a43cee5d35390c3bf8a9" />
+    <None Include="client\.git\objects\18\07fd68a2b3c76395b9bc0f6a9ca13eb232f3d0" />
+    <None Include="client\.git\objects\23\2c3a5cea1cb9f04c82eac0338b883b946b882c" />
+    <None Include="client\.git\objects\23\38536ef375d732ea5ced33578a24473cc1654e" />
+    <None Include="client\.git\objects\2c\3ba2995c8510c02ca812f90280146738f162cf" />
+    <None Include="client\.git\objects\36\12073bc31cd4c1f5d6cbb00318521e9a61bd8a" />
+    <None Include="client\.git\objects\47\87ad1640de93f95edbb3d975b7a134b64d2b5a" />
+    <None Include="client\.git\objects\50\193eb0f283fa7064c483c2d85a07c2190cceb5" />
+    <None Include="client\.git\objects\59\d9a3a3e73ffc640517ef488f6f89d6270195d1" />
+    <None Include="client\.git\objects\5b\7f449947cd1905d58a4240fa98a8f56c561fd3" />
+    <None Include="client\.git\objects\61\ce1980abba0c10b6e3920835bf14cff11dedba" />
+    <None Include="client\.git\objects\67\bcdea5d3bd7843c40b4a669ca07295680ffa80" />
+    <None Include="client\.git\objects\6c\04942bdd89af7139d3c71aef0e339ec709336e" />
+    <None Include="client\.git\objects\72\9a6d6368a987c2be1123390d4feff02942ee06" />
+    <None Include="client\.git\objects\7b\4f817adb754769ca126a939d48ac4b0850489d" />
+    <None Include="client\.git\objects\86\d943a9b2e8f3bb69fbe37fd8363962646b1d92" />
+    <None Include="client\.git\objects\8a\93ba185d8cab1e0f39137fa4ceac25bc5f4db6" />
+    <None Include="client\.git\objects\8e\00cb22702ca2e292de0d68a8b31ce0b9555846" />
+    <None Include="client\.git\objects\90\d4ee0072ce3fc41812f8af910219f9eea3c3de" />
+    <None Include="client\.git\objects\99\7406ad22c29aae95893fb3d666c30258a09537" />
+    <None Include="client\.git\objects\a7\1e1b63554373c91014c73fb6da60b84daacc9f" />
+    <None Include="client\.git\objects\a9\2c05ae78d622f819c0537aa4b9340a9a8fd198" />
+    <None Include="client\.git\objects\a9\eaedc7492aa5ab5ed5a5825e1134bb797b8a00" />
+    <None Include="client\.git\objects\b4\9eaddcf0fd0d0dc3d09e421884cdacf0817740" />
+    <None Include="client\.git\objects\b6\8475e0fc0ce9d312147f19f0867a7aed41bcbc" />
+    <None Include="client\.git\objects\bd\69c5d430ac78d5ed309cc3bb7306d01a3ca192" />
+    <None Include="client\.git\objects\c7\b673cf44b388e9989fe908b78d7d73cd2e1409" />
+    <None Include="client\.git\objects\d4\25c6f56b578db1e8d7f8fa2d6c90693ba5d4fb" />
+    <None Include="client\.git\objects\d4\f5809ce3386b3f3f9eed76f5cbcfe7e61074bc" />
+    <None Include="client\.git\objects\d5\64d0bc3dd917926892c55e3706cc116d5b165e" />
+    <None Include="client\.git\objects\d7\0510d8d1c5f712015773c6acfd12658a921492" />
+    <None Include="client\.git\objects\dd\f12452f3e6b6227db0d3a8a520e615e05e1636" />
+    <None Include="client\.git\objects\e4\8d8c109d668d9b5c5f25e0c2831bbe48d3cc1d" />
+    <None Include="client\.git\objects\e6\9de29bb2d1d6434b8b29ae775ad8c2e48c5391" />
+    <None Include="client\.git\objects\f2\38c0bbebe93459d152a88a40da7aa0eeb8e91b" />
+    <None Include="client\.git\objects\f6\9f65417ab821ad93f8914a20e5ea720d165e63" />
+    <None Include="client\.git\refs\heads\master" />
+  </ItemGroup>
+
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
+      <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+</Project>

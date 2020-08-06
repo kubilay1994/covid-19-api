@@ -1,0 +1,43 @@
+.container {
+    display: flex;
+    margin: 2rem 1rem;
+    max-height: 30rem;
+    overflow-y: auto;
+}
+
+.sidetable {
+    border-collapse: collapse;
+    width: 100%;
+    /* max-width: 12rem; */
+}
+
+.maxWidth {
+    max-width: 12rem;
+}
+
+.sidetable tr {
+    border-bottom: 1px solid #c8b6da;
+}
+
+.sidetable tr:nth-child(even) {
+    background: #c8b6da;
+}
+
+.sidetable td,
+.sidetable th {
+    padding: 0.5rem;
+    text-align: center;
+}
+
+
+.pie {
+    padding: 2rem;
+    height: 34rem;
+}
+
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}

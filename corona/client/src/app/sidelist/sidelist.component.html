@@ -1,0 +1,51 @@
+<div class="header">
+    <div>
+        <input
+            type="text"
+            placeholder="Search Country"
+            [(ngModel)]="filterInput"
+        />
+    </div>
+    <div>
+        <select name="Sort options" (change)="sortBy($event.target.value)">
+            <option value="" selected disabled hidden>Sort</option>
+            <option value="cases">Sort by Case</option>
+            <option value="deaths">Sort by Deaths</option>
+            <option value="recovered">Sort by Recovered</option>
+        </select>
+    </div>
+</div>
+
+<div class="container">
+    <table [ngClass]="{ maxWidth: mode === 'normal' }" class="sidetable">
+        <thead>
+            <tr>
+                <th>
+                    COUNTRY
+                </th>
+                <th>
+                    CASES
+                </th>
+                <th>
+                    DEATHS
+                </th>
+                <th>
+                    RECOVERED
+                </th>
+                <th *ngIf="mode === 'extended'"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let country of coronaCountryData | filter: filterInput">
+                <td>{{ country.country }}</td>
+                <td>{{ country.cases }}</td>
+                <td>{{ country.deaths }}</td>
+                <td>{{ country.recovered }}</td>
+                <td>
+                    <button *ngIf="mode === 'extended'">SEÇ</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div *ngIf="mode === 'normal'" id="piediv" class="pie"></div>

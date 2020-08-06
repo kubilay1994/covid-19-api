@@ -1,0 +1,36 @@
+<div class="container">
+    <div class="card">
+        <form (ngSubmit)="onSubmit(f)" #f="ngForm" class="form">
+            <div class="formItem">
+                <label for="username" class="formLabel">Username</label>
+                <input
+                    type="text"
+                    ngModel
+                    name="username"
+                    id="username"
+                    class="formInput"
+                    required
+                />
+            </div>
+            <div class="formItem">
+                <label for="password" class="formLabel">Password</label>
+                <input
+                    type="password"
+                    ngModel
+                    name="password"
+                    id="password"
+                    class="formInput"
+                    required
+                />
+            </div>
+
+            <button
+                type="submit"
+                class="btn btnPlacement"
+                [disabled]="!f.valid"
+            >
+                Login
+            </button>
+        </form>
+    </div>
+</div>
