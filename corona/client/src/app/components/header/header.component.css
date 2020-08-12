@@ -7,7 +7,6 @@
     left: 0;
     background-color: rebeccapurple;
     padding: 0.5rem;
-    /* height: 4rem; */
     z-index: 1;
 }
 
@@ -16,17 +15,26 @@
     color: whitesmoke;
     cursor: pointer;
 }
+.link:hover {
+    color: #0affbb;
+}
 
 ul {
     display: flex;
-    align-items: center;
 
     justify-content: space-around;
     list-style: none;
     width: 100%;
 }
 
+.leftSide {
+    display: flex;
+}
+
+.leftSide > li {
+    margin-right: 2rem;
+}
 
 .active {
-    color: yellow;
+    color: #0affbb;
 }

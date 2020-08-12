@@ -33,7 +33,6 @@ namespace corona.Repositories
         public Task<List<CoronaRecord>> GetAll(int timeLineLimit)
         {
             IMongoQueryable<CoronaRecord> query = GetCoronaQuery(cr => true, timeLineLimit);
-            Console.WriteLine(query);
             return query.ToListAsync();
         }
 
@@ -62,6 +61,8 @@ namespace corona.Repositories
                 })
                 .OrderByDescending(item => item._id)
                 .Take(limit);
+
+
 
 
             var res = await query.ToListAsync();

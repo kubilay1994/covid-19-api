@@ -1,0 +1,59 @@
+<div class="container">
+    <h3 class="title">Details for country with id {{ countryId }}</h3>
+
+    <form (ngSubmit)="onSubmit(form)" class="formContainer" #form="ngForm">
+        <div>
+            <div class="inputContainer">
+                <input
+                    type="date"
+                    placeholder="Select date"
+                    ngModel
+                    name="date"
+                />
+                <input
+                    type="number"
+                    placeholder="Dead Count"
+                    ngModel
+                    name="deaths"
+                />
+            </div>
+            <div class="inputContainer">
+                <input
+                    type="number"
+                    placeholder="Case Count"
+                    ngModel
+                    name="cases"
+                />
+                <input
+                    type="number"
+                    placeholder="Recovery Count"
+                    ngModel
+                    name="recovered"
+                />
+            </div>
+        </div>
+        <button type="submit" class="saveButton">Save</button>
+    </form>
+
+    <main>
+        <header class="header">
+            <strong>Date</strong>
+            <strong>Cases</strong>
+            <strong>Deaths</strong>
+            <strong>Recovered</strong>
+        </header>
+
+        <ul class="countryTable">
+            <li
+                *ngFor="let data of (historicalData | async)?.timeline"
+                class="countryInfo"
+                (click)="onListItemSelected(form, data)"
+            >
+                <div>{{ data.date | date }}</div>
+                <div>{{ data.cases | number }}</div>
+                <div>{{ data.deaths | number }}</div>
+                <div>{{ data.recovered | number }}</div>
+            </li>
+        </ul>
+    </main>
+</div>

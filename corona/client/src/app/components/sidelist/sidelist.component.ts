@@ -1,18 +1,12 @@
-import {
-    Component,
-    OnInit,
-    Input,
-    NgZone,
-    ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 
-import { CoronaDataService } from '../services/corona-data.service';
-import { CoronaCountryRecord } from '../model/corona.interface';
+import { CoronaDataService } from '../../services/corona-data.service';
+import { CoronaRecord } from '../../models/corona.interface';
 
-import { flatMap } from 'rxjs/operators';
-import { Subscription, BehaviorSubject } from 'rxjs';
+import { flatMap, take } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-sidelist',
@@ -21,25 +15,10 @@ import { Subscription, BehaviorSubject } from 'rxjs';
 })
 export class SidelistComponent implements OnInit {
     pie: am4charts.PieChart;
-    coronaCountryData: CoronaCountryRecord[] = [];
+    coronaCountryData: CoronaRecord[] = [];
     subscription: Subscription;
-    totalSubscription: Subscription;
-
 
     filterInput = '';
-
-    private _mode = 'normal';
-
-    get mode() {
-        return this._mode;
-    }
-
-    @Input()
-    set mode(mode: string) {
-        if (mode) {
-            this._mode = mode;
-        }
-    }
 
     constructor(
         private zone: NgZone,
@@ -54,31 +33,36 @@ export class SidelistComponent implements OnInit {
     }
 
     ngAfterViewInit() {
-        this.zone.runOutsideAngular(async () => {
+        this.zone.runOutsideAngular(() => {
             this.pie = am4core.create('piediv', am4charts.PieChart);
 
-            let firstFiveCountries: CoronaCountryRecord[];
+            let firstFiveCountries: CoronaRecord[];
+
             this.subscription = this._coronaDataService.coronaCountries
                 .pipe(
-                    flatMap((result) => {
+                    flatMap(result => {
                         this.coronaCountryData = result;
                         this.cdRef.detectChanges();
                         firstFiveCountries = result.slice(0, 5);
-                        return this._coronaDataService.coronaTotal;
+                        return this._coronaDataService.coronaTotal.pipe(
+                            take(1)
+                        );
                     })
                 )
-                .subscribe((worldWideData) => {
-                    let otherCases =
-                        worldWideData.cases -
-                        firstFiveCountries.reduce(
-                            (acc, curr) => acc + curr.cases,
-                            0
-                        );
+                .subscribe(worldWideData => {
+                    if (worldWideData) {
+                        let otherCases =
+                            worldWideData.timeline[0].cases -
+                            firstFiveCountries.reduce(
+                                (acc, curr) => acc + curr.cases,
+                                0
+                            );
 
-                    this.pie.data = [
-                        ...firstFiveCountries,
-                        { country: 'Other', cases: otherCases },
-                    ];
+                        this.pie.data = [
+                            ...firstFiveCountries,
+                            { country: 'Other', cases: otherCases },
+                        ];
+                    }
                 });
 
             let pieSeries = this.pie.series.push(new am4charts.PieSeries());
@@ -95,8 +79,7 @@ export class SidelistComponent implements OnInit {
             if (this.pie) {
                 this.pie.dispose();
             }
-
-            this.subscription.unsubscribe();
         });
+        this.subscription.unsubscribe();
     }
 }

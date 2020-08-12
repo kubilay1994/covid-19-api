@@ -31,16 +31,18 @@ namespace corona.Controllers
         }
 
         [HttpGet("country")]
-        public async Task<IActionResult> FetchCoronaHistoricalData([FromQuery] string code, [FromQuery] int timelineLimit = 30)
+        public async Task<IActionResult> FetchAllHistoricalData([FromQuery] int timelineLimit = 30)
+        {
+
+            List<CoronaRecord> res = await _coronaService.GetAll(timelineLimit);
+            return Ok(res);
+        }
+
+        [HttpGet("country/{code}")]
+        public async Task<IActionResult> FetchCoronaHistoricalData(string code, [FromQuery] int timelineLimit = 30)
         {
             try
             {
-                if (code == null)
-                {
-                    List<CoronaRecord> result = await _coronaService.GetAll(timelineLimit);
-                    return Ok(result);
-                }
-
                 CoronaRecord res = await _coronaService.GetOne(code, timelineLimit);
                 return Ok(res);
             }
@@ -59,9 +61,9 @@ namespace corona.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateCoronaRecord(CoronaRecord record)
         {
-
             await _coronaService.InsertRecord(record);
             return Ok(new
             {
@@ -70,13 +72,29 @@ namespace corona.Controllers
             });
         }
 
-        // POST api/<CoronaController>
-        [HttpPatch("timeline")]
+        [HttpPost("records")]
         [Authorize]
-        public async Task<IActionResult> UpdateTimeLine([FromBody] TimelineRecord record, [FromQuery] string code)
+        public async Task<IActionResult> CreateCoronaRecords(IEnumerable<CoronaRecord> records)
+        {
+            await _coronaService.InsertRecords(records);
+            return Ok(new
+            {
+                message = "Record added successfully",
+                records,
+            });
+        }
+
+
+        // POST api/<CoronaController>
+        [HttpPatch("timeline/{code}")]
+        [Authorize]
+        public async Task<IActionResult> UpdateTimeLine([FromBody] TimelineRecord record, string code)
         {
             await _coronaService.UpdateTimeLineRecord(code, record);
-            return Ok("Timeline updated");
+            return Ok(new
+            {
+                message = "Timeline updated"
+            });
         }
     }
 }

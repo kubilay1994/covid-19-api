@@ -51,11 +51,14 @@ namespace corona.Services
 
             };
 
+            //var expiresIn = Convert.ToDouble(_config["Jwt:ExpiresIn"]);
+            var expiresIn = _config.GetSection("Jwt").GetValue<double>("ExpiresIn");
+
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddHours(1),
+                expires: DateTime.Now.AddMilliseconds(expiresIn),
                 signingCredentials: credentials
             );
 

@@ -1,0 +1,36 @@
+<div class="container">
+    <app-sidelist></app-sidelist>
+    <div class="mapContainer">
+        <ng-container *ngIf="currCoronaRecord | async as record">
+            <div class="mapHeader">
+                <h3>
+                    <strong>{{ record.country }} Total Case Count</strong>
+                </h3>
+                <button (click)="getWorldwideData()">
+                    Return to Worldwide
+                </button>
+            </div>
+            <div class="coronaInfo">
+                <div>
+                    <p>Total Case Count</p>
+                    <strong>{{ record.timeline[0].cases | number }}</strong>
+                </div>
+                <div>
+                    <p>Death Cases</p>
+                    <strong>{{ record.timeline[0].deaths | number }}</strong>
+                </div>
+                <div>
+                    <p>Recovered</p>
+                    <strong>{{ record.timeline[0].recovered | number }}</strong>
+                </div>
+            </div>
+            <app-world-map
+                class="map"
+                [currCountryRecord]="currCoronaRecord"
+            ></app-world-map>
+            <app-line-chart
+                [currCoronaRecord]="currCoronaRecord"
+            ></app-line-chart>
+        </ng-container>
+    </div>
+</div>

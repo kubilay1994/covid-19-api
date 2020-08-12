@@ -1,0 +1,29 @@
+<nav class="header">
+    <ul>
+        <li>
+            <a
+                class="link"
+                routerLink=""
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                >World Map</a
+            >
+        </li>
+        <div class="leftSide">
+            <li *ngIf="!isAuthenticated">
+                <a class="link" routerLink="login" routerLinkActive="active"
+                    >Login</a
+                >
+            </li>
+            <li *ngIf="isAuthenticated">
+                <a class="link" routerLink="admin" routerLinkActive="active"
+                    >Admin Panel</a
+                >
+            </li>
+            <li *ngIf="isAuthenticated">
+                <a class="link" (click)="onLogout()">Logout</a>
+            </li>
+        </div>
+    </ul>
+</nav>
+<div style="height: 6rem;"></div>

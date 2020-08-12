@@ -11,6 +11,8 @@ namespace corona.Services.Interfaces
     public interface ICoronaService
     {
         public Task InsertRecord(CoronaRecord record);
+        public Task InsertRecords(IEnumerable<CoronaRecord> records);
+
         public Task UpdateTimeLineRecord(string code, TimelineRecord record);
 
         public Task<CoronaRecord> GetOne(string code, int timeLineLimit);

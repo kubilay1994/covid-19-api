@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="inputContainer">
+        <input
+            type="text"
+            placeholder="Search Country"
+            class="countryFilter"
+            [(ngModel)]="countryFilter"
+        />
+    </div>
+
+    <div>
+        <header class="header">
+            <strong>Country</strong>
+            <strong>Cases</strong>
+            <strong>Deaths</strong>
+            <strong>Recovered</strong>
+        </header>
+        <ul class="countryTable">
+            <li
+                *ngFor="
+                    let country of coronaCountryData
+                        | async
+                        | filter: countryFilter
+                "
+                class="countryInfo"
+                [routerLink]="['./', country.id]"
+            >
+                <div>{{ country.country }}</div>
+                <div>{{ country.cases }}</div>
+                <div>{{ country.deaths }}</div>
+                <div>{{ country.recovered }}</div>
+            </li>
+        </ul>
+    </div>
+</div>

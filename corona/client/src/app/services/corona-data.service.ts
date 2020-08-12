@@ -1,98 +1,79 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
-import { BehaviorSubject, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 import {
-    CoronaCountryRecord,
-    CoronaTotalRecord,
-    CoronaHistoricalAll,
-    CoronaHistoricalMapped,
-    CoronaHistoricalCountry,
-} from '../model/corona.interface';
+    CoronaHistoricalRecord,
+    CoronaRecord,
+} from '../models/corona.interface';
 
 @Injectable({
     providedIn: 'root',
 })
 export class CoronaDataService {
-    coronaCountries = new BehaviorSubject<CoronaCountryRecord[]>([]);
-    coronaTotal = new BehaviorSubject<CoronaTotalRecord>({ cases: 0 });
-
-    coronaHistorical = new BehaviorSubject<CoronaHistoricalMapped[]>([]);
-    // coronaHistorical: CoronaHistoricalMapped[];
+    coronaCountries = new BehaviorSubject<CoronaRecord[]>([]);
+    coronaTotal = new BehaviorSubject<CoronaHistoricalRecord>(null);
 
     constructor(private http: HttpClient) {
-        this.fetchCountryHistoricalData();
+        this.fetchWorldRecord().subscribe(data => {
+            this.coronaTotal.next(data);
+        });
         this.fetchCoronaData();
     }
 
     private fetchCoronaData() {
-        this.http
-            .get<CoronaCountryRecord[]>(
-                'https://disease.sh/v3/covid-19/countries/?sort=cases'
-            )
-            .subscribe((data) => {
-                this.coronaCountries.next(data);
+        this.fetchAllHistoricalRecords(1).subscribe(data => {
+            const mappedData = data.map(el => {
+                return {
+                    id: el.id,
+                    country: el.country,
+                    ...el.timeline[0],
+                };
             });
-        this.http
-            .get<CoronaTotalRecord>('https://disease.sh/v3/covid-19/all')
-            .subscribe((data) => {
-                this.coronaTotal.next(data);
-            });
+            this.coronaCountries.next(
+                mappedData.sort((a, b) => b.cases - a.cases)
+            );
+        });
     }
 
-    fetchCountryHistoricalData(countryId?: string) {
-        if (countryId) {
-            this.http
-                .get<CoronaHistoricalCountry>(
-                    `https://disease.sh/v3/covid-19/historical/${countryId}`
-                )
-                .pipe(
-                    map((data) => {
-                        let keys = Object.keys(data.timeline.cases);
-                        let mappedData: CoronaHistoricalMapped[] = [];
-                        for (let date of keys) {
-                            mappedData.push({
-                                date,
-                                cases: data.timeline.cases[date],
-                                deaths: data.timeline.deaths[date],
-                                recovered: data.timeline.recovered[date],
-                            });
-                        }
-                        return mappedData;
-                    })
-                )
-                .subscribe((data) => {
-                    console.log(data);
-                    this.coronaHistorical.next(data);
-                    // this.coronaHistorical = data;
-                });
-        } else {
-            this.http
-                .get<CoronaHistoricalAll>(
-                    'https://disease.sh/v3/covid-19/historical/all'
-                )
-                .pipe(
-                    map((data) => {
-                        let mappedData: CoronaHistoricalMapped[] = [];
-                        let keys = Object.keys(data.cases);
-                        for (let date of keys) {
-                            mappedData.push({
-                                date,
-                                cases: data.cases[date],
-                                deaths: data.deaths[date],
-                                recovered: data.recovered[date],
-                            });
-                        }
-                        return mappedData;
-                    })
-                )
-                .subscribe((data) => {
-                    this.coronaHistorical.next(data)
-                }
-                    // this.coronaHistorical = data;
-                );
-        }
+    fetchWorldRecord(timelineLimit: number = 360) {
+        let params = new HttpParams({
+            fromObject: {
+                timelineLimit: timelineLimit.toString(),
+            },
+        });
+        return this.http.get<CoronaHistoricalRecord>('api/corona/all', {
+            params,
+        });
+    }
+
+    fetchAllHistoricalRecords(timelineLimit: number = 360) {
+        let params = new HttpParams({
+            fromObject: {
+                timelineLimit: timelineLimit.toString(),
+            },
+        });
+        return this.http.get<CoronaHistoricalRecord[]>(`api/corona/country`, {
+            params,
+        });
+    }
+
+    fetchCountryHistoricalRecord(
+        countryId: string,
+        timelineLimit: number = 360
+    ) {
+        let params = new HttpParams({
+            fromObject: {
+                timelineLimit: timelineLimit.toString(),
+            },
+        });
+
+        return this.http.get<CoronaHistoricalRecord>(
+            `api/corona/country/${countryId}`,
+            {
+                params,
+            }
+        );
     }
 }

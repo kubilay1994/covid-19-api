@@ -26,6 +26,11 @@ namespace corona.Services
 
         }
 
+        public Task InsertRecords(IEnumerable<CoronaRecord> records)
+        {
+            return _repository.InsertMany(records);
+        }
+
         public Task<CoronaRecord> GetOne(string code, int timeLineLimit)
         {
             return _repository.GetOne(code, timeLineLimit);

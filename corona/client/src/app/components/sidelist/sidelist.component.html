@@ -17,7 +17,7 @@
 </div>
 
 <div class="container">
-    <table [ngClass]="{ maxWidth: mode === 'normal' }" class="sidetable">
+    <table class="sidetable maxWidth">
         <thead>
             <tr>
                 <th>
@@ -32,7 +32,6 @@
                 <th>
                     RECOVERED
                 </th>
-                <th *ngIf="mode === 'extended'"></th>
             </tr>
         </thead>
         <tbody>
@@ -41,11 +40,8 @@
                 <td>{{ country.cases }}</td>
                 <td>{{ country.deaths }}</td>
                 <td>{{ country.recovered }}</td>
-                <td>
-                    <button *ngIf="mode === 'extended'">SEÇ</button>
-                </td>
             </tr>
         </tbody>
     </table>
 </div>
-<div *ngIf="mode === 'normal'" id="piediv" class="pie"></div>
+<div id="piediv" class="pie"></div>

@@ -1,13 +1,15 @@
-import { Component, OnInit, NgZone, AfterViewInit } from '@angular/core';
+import { Component, OnInit, NgZone, AfterViewInit, Input } from '@angular/core';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4maps from '@amcharts/amcharts4/maps';
 
 import am4geodata_worldLow from '@amcharts/amcharts4-geodata/worldlow';
 
-import { CoronaDataService } from '../services/corona-data.service';
-import { CoronaCountryRecord } from '../model/corona.interface';
-import { Subscription } from 'rxjs';
-import { MapService } from '../services/map.service';
+import { CoronaDataService } from '../../services/corona-data.service';
+import {
+    CoronaRecord,
+    CoronaHistoricalRecord,
+} from '../../models/corona.interface';
+import { Subscription, BehaviorSubject } from 'rxjs';
 
 @Component({
     selector: 'app-world-map',
@@ -15,14 +17,13 @@ import { MapService } from '../services/map.service';
     styleUrls: ['./world-map.component.css'],
 })
 export class WorldMapComponent implements OnInit, AfterViewInit {
+    @Input() currCountryRecord: BehaviorSubject<CoronaHistoricalRecord>;
     map: am4maps.MapChart;
     countrySubscription: Subscription;
 
-    
     constructor(
         private zone: NgZone,
-        private _coronaDataService: CoronaDataService,
-        private _mapService: MapService
+        private _coronaDataService: CoronaDataService
     ) {}
 
     ngOnInit(): void {}
@@ -44,7 +45,7 @@ export class WorldMapComponent implements OnInit, AfterViewInit {
             let activeState = polygonTemplate.states.create('active');
             activeState.properties.fill = am4core.color('#aabbcc');
 
-            polygonTemplate.events.on('hit', (ev) => {
+            polygonTemplate.events.on('hit', ev => {
                 ev.target.series.chart.zoomToMapObject(ev.target);
 
                 let countryInfo = ev.target.dataItem.dataContext as {
@@ -52,11 +53,11 @@ export class WorldMapComponent implements OnInit, AfterViewInit {
                     name: string;
                 };
 
-                this._coronaDataService.fetchCountryHistoricalData(
-                    countryInfo.id
-                );
-                this._mapService.setCountry(countryInfo.name);
-
+                this._coronaDataService
+                    .fetchCountryHistoricalRecord(countryInfo.id)
+                    .subscribe(data => {
+                        this.zone.run(() => this.currCountryRecord.next(data));
+                    });
             });
 
             // Create hover state and set alternative fill color
@@ -70,9 +71,7 @@ export class WorldMapComponent implements OnInit, AfterViewInit {
             );
 
             this.countrySubscription = this._coronaDataService.coronaCountries.subscribe(
-                (data) => {
-                    imageSeries.data = data;
-                }
+                data => (imageSeries.data = data)
             );
 
             imageSeries.dataFields.value = 'cases';
@@ -82,8 +81,7 @@ export class WorldMapComponent implements OnInit, AfterViewInit {
 
             imageSeriesTemplate.adapter.add('latitude', (latitude, target) => {
                 let polygon = polygonSeries.getPolygonById(
-                    (target.dataItem.dataContext as CoronaCountryRecord)
-                        .countryInfo.iso2
+                    (target.dataItem.dataContext as CoronaRecord).id
                 );
                 if (polygon) {
                     return polygon.visualLatitude;
@@ -95,8 +93,7 @@ export class WorldMapComponent implements OnInit, AfterViewInit {
                 'longitude',
                 (longitude, target) => {
                     let polygon = polygonSeries.getPolygonById(
-                        (target.dataItem.dataContext as CoronaCountryRecord)
-                            .countryInfo.iso2
+                        (target.dataItem.dataContext as CoronaRecord).id
                     );
                     if (polygon) {
                         return polygon.visualLongitude;
@@ -131,7 +128,7 @@ export class WorldMapComponent implements OnInit, AfterViewInit {
             if (this.map) {
                 this.map.dispose();
             }
-            this.countrySubscription.unsubscribe();
         });
+        this.countrySubscription.unsubscribe();
     }
 }

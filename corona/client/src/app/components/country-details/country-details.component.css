@@ -1,0 +1,76 @@
+.container {
+    width: 70%;
+    margin: auto;
+    margin-bottom: 2rem;
+}
+
+.title {
+    text-align: center;
+}
+
+.formContainer {
+    display: flex;
+    height: 10rem;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.inputContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.inputContainer > input {
+    margin-right: 1rem;
+    padding: 0.4rem;
+    flex: 1;
+}
+
+.saveButton {
+    width: 5rem;
+    padding: 0.5rem;
+}
+
+.header {
+    display: flex;
+    padding: 1rem;
+}
+
+.header > strong {
+    flex: 1;
+    margin-right: 1rem;
+}
+
+.countryTable {
+    overflow: auto;
+    max-height: 25rem;
+    margin: 0;
+    padding: 0;
+}
+
+.countryInfo {
+    display: flex;
+    padding: 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid plum;
+}
+
+.countryInfo:hover {
+    background-color: #dda0dd41;
+}
+
+.countryInfo > div {
+    flex: 1;
+    margin-right: 1rem;
+}
+
+.countryInfo > div:nth-child(2) {
+    color: red;
+}
+.countryInfo > div:nth-child(3) {
+    color: grey;
+}
+.countryInfo > div:nth-child(4) {
+    color: green;
+}

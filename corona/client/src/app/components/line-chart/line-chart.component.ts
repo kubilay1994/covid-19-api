@@ -1,10 +1,9 @@
-import { Component, OnInit, NgZone, AfterViewInit } from '@angular/core';
+import { Component, OnInit, NgZone, AfterViewInit, Input } from '@angular/core';
 
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
-import { CoronaDataService } from '../services/corona-data.service';
-import { Subscription } from 'rxjs';
-import { MapService } from '../services/map.service';
+import { Subscription, BehaviorSubject } from 'rxjs';
+import { CoronaHistoricalRecord } from 'src/app/models/corona.interface';
 
 @Component({
     selector: 'app-line-chart',
@@ -12,27 +11,13 @@ import { MapService } from '../services/map.service';
     styleUrls: ['./line-chart.component.css'],
 })
 export class LineChartComponent implements OnInit, AfterViewInit {
+    @Input() currCoronaRecord: BehaviorSubject<CoronaHistoricalRecord>;
     lineChart: am4charts.XYChart;
     subscription: Subscription;
-    mapSubscription: Subscription;
 
-    selectedCountry: string;
+    constructor(private zone: NgZone) {}
 
-    constructor(
-        private zone: NgZone,
-        private _coronaDataService: CoronaDataService,
-        private _mapService: MapService
-    ) {}
-
-    ngOnInit(): void {
-        this.mapSubscription = this._mapService.selectedCountry.subscribe(
-            (countryName) => {
-                this.zone.run(() => {
-                    this.selectedCountry = countryName;
-                });
-            }
-        );
-    }
+    ngOnInit(): void {}
 
     private createLineSeries(
         name: string,
@@ -55,11 +40,11 @@ export class LineChartComponent implements OnInit, AfterViewInit {
         this.zone.runOutsideAngular(() => {
             this.lineChart = am4core.create('linediv', am4charts.XYChart);
 
-            this.subscription = this._coronaDataService.coronaHistorical.subscribe(
-                (data) => {
-                    this.lineChart.data = data;
+            this.subscription = this.currCoronaRecord.subscribe(data => {
+                if (data) {
+                    this.lineChart.data = [...data.timeline].reverse();
                 }
-            );
+            });
 
             let dateAxis = this.lineChart.xAxes.push(new am4charts.DateAxis());
             dateAxis.dataFields.date = 'date';
@@ -80,6 +65,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
             this.createLineSeries('Deaths', 'deaths', 'grey');
             this.createLineSeries('Recovered', 'recovered', 'green');
 
+            this.lineChart.dateFormatter.inputDateFormat = 'yyyy-MM-dd';
             this.lineChart.cursor = new am4charts.XYCursor();
             this.lineChart.legend = new am4charts.Legend();
 
@@ -94,9 +80,7 @@ export class LineChartComponent implements OnInit, AfterViewInit {
             if (this.lineChart) {
                 this.lineChart.dispose();
             }
-
-            this.subscription.unsubscribe();
         });
-        this.mapSubscription.unsubscribe();
+        this.subscription.unsubscribe();
     }
 }

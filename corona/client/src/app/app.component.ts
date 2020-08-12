@@ -3,11 +3,17 @@ import * as am4core from '@amcharts/amcharts4/core';
 
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import am4themes_frozen from '@amcharts/amcharts4/themes/frozen';
-
-import { CoronaDataService } from './services/corona-data.service';
+import { AuthService } from './services/auth.service';
 
 am4core.useTheme(am4themes_animated);
 am4core.useTheme(am4themes_frozen);
+am4core.options.queue = true;
+am4core.options.onlyShowOnViewport = true;
+
+
+
+
+
 
 @Component({
     selector: 'app-root',
@@ -15,7 +21,9 @@ am4core.useTheme(am4themes_frozen);
     styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-    constructor(private _coronaDataService: CoronaDataService) {}
+    constructor(private authService: AuthService) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.authService.autoLogin();
+    }
 }

@@ -25,10 +25,12 @@ namespace corona.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IConfiguration _config;
 
-        public LoginController(IUserService userService)
+        public LoginController(IConfiguration config, IUserService userService)
         {
             _userService = userService;
+            _config = config;
         }
 
         [HttpPost]
@@ -42,14 +44,12 @@ namespace corona.Controllers
                 var tokenString = _userService.GenerateJWTToken(user);
                 return Ok(new
                 {
-                    user = new
-                    {
-                        username = user.Username
-                    },
-                    token = tokenString
+                    username = user.Username,
+                    token = tokenString,
+                    expiresIn = _config.GetValue<double>("Jwt:ExpiresIn")
+
                 });
             }
-
             return Unauthorized();
 
 
