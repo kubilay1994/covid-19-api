@@ -88,12 +88,15 @@ namespace corona.Controllers
         // POST api/<CoronaController>
         [HttpPatch("timeline/{code}")]
         [Authorize]
-        public async Task<IActionResult> UpdateTimeLine([FromBody] TimelineRecord record, string code)
+        public async Task<IActionResult> UpdateTimeLine([FromBody] TimelineRecord record, string code, [FromQuery] int timelineLimit = 30)
         {
             await _coronaService.UpdateTimeLineRecord(code, record);
             return Ok(new
             {
-                message = "Timeline updated"
+                message = "Timeline updated",
+                updatedDocument = await _coronaService.GetOne(code, timelineLimit),
+                worldRecord = await _coronaService.GetWorldRecord(timelineLimit)
+
             });
         }
     }
